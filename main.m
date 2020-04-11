@@ -1,19 +1,19 @@
 clear all;
 
-% Définition des paramètres de la simulation 
-parametres;
+% Define simulation parameters
+parameters;
 
-% Calcul des variables utiles dépendantes de ces paramètres 
+% Useful variables depending on those parameters 
 setup;
 
-% Calcul des signaux dans l’émetteur 
-emetteur;
+% Transmitter signals computation
+transmitter;
 
-% Passage à travers le canal 
-canal;
+% Signals going through the transmission channel
+channel;
 
-% Calcul des opérations effectuées dans le récepteur 
-recepteur; 
+% Transformations made by the receiver
+receiver; 
 
-% Affichage des résultats 
-resultats;
+% display results
+results;

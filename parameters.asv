@@ -1,25 +1,25 @@
-% Taille des messages (Ms, Md)
+% Messages' size (Ms, Md)
 M = 9;
 
-% Nature des messages (sequence imposee, sequence generee aleatoirement, ...) 
+% Messages' nature (sequence imposee, sequence generee aleatoirement, ...) 
 
-% Nombre de modules sur le reseau (K) 
+% Number of modules (K) 
 K = 3;
 
-% Nombre de ressources physiques disponibles (N) 
+% Number of available physical ressources (N) 
 N = 4;
 
-% Debit binaire ou duree d’un bit (R = 1/Tb) 
+% Bit rate or bit duration (R = 1/Tb) 
 Tb = 0.001;
 R = 1 / Tb;
 
-% Facteur de surechantillonnage du FIR ? 
+% Oversampling factor of the FIR ? 
 Beta = 64;          % ( >= 4N-2)
 
-% parametres du FIR: ?, L, nb 
+% Parameters of the FIR: ?, L, nb 
 Alpha = 0.4;
 
-% Puissance transmise sur le cable Pt, impedance caracteristique du cable Zc 
+% Transmitted power over the wire Pt, impedance of the wire Zc 
 
 % Facteur de sur echantillonnage pour les signaux continus (?) 
 Gamma = 100;
