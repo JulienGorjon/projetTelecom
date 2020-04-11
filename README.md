@@ -40,9 +40,9 @@ Telecommunications project at ECAM Brussels, MA1
 8.  Réglage du niveau des signaux ´emis (en volts) pour obtenir une puissance de transmission Pt sur un caˆble d’imp´edance caract´eristique Zc à la sortie 
   de chaque emetteur.
 
-9.  Calcul des signaux att´enu´es et retard´es par le canal de transmission s′n(t) = αnsn(t−τn). On supposera un facteur d’aﬀaiblissement αn identique pour tous les
-   canaux, et des d´elai τn choisis al´eatoirement dans l’intervalle [0,Tb]. Ces d´elais reﬂ`etent le fait que les diﬀ´erents ´emetteurs ne transmettent pas leur 
-   trame de donn´ees de mani`ere synchrone: ces trames arrivent en ordre dispers´e au niveau du r´ecepteur.
+9.  Calcul des signaux atténués et retardés par le canal de transmission s′n(t) = αnsn(t−τn). On supposera un facteur d’aﬀaiblissement αn identique pour tous les
+   canaux, et des délais τn choisis aléatoirement dans l’intervalle [0,Tb]. Ces délais reﬂètent le fait que les diﬀérents émetteurs ne transmettent pas leur 
+   trame de donnés de manière synchrone: ces trames arrivent en ordre dispersé au niveau du récepteur.
 
 10. Génération du bruit filtré nf(t) correspondant au bruit blanc n(t) passé dans un ﬁltre passe-bas id´eal de bande 2N/Tb. La variance σ2 n des echantillons 
   de bruit générés ici devra permettre d’obtenir le rapport Eb/N0 souhaité.
