@@ -68,16 +68,16 @@
         quantiz.m
 
 17) Recepteur adapté:
-– Passage dans un ﬁltre adapté numerique 
-– Synchronisation par corr´elation avec la sequence pilote 
-– Calcul des M × N symboles estimés an(k) 
-– Prise de décision
+    – Passage dans un ﬁltre adapté numerique 
+    – Synchronisation par corr´elation avec la sequence pilote 
+    – Calcul des M × N symboles estimés an(k) 
+    – Prise de décision
 
 18) Recepteur simpliﬁé:
-– Quantiﬁcation sur 3 niveaux 
-– Synchronisation par observation des ﬂancs montants et descendants et comparaisonavec la sequence pilote 
-– Calcul des M × N symboles estimés an(k) 
-– Prise de décision
+    – Quantiﬁcation sur 3 niveaux 
+    – Synchronisation par observation des ﬂancs montants et descendants et comparaisonavec la sequence pilote 
+    – Calcul des M × N symboles estimés an(k) 
+    – Prise de décision
 
 19) Calcul du taux d’erreur obtenu sur chaque canal fréquentiel.
         xor.m
