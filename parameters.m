@@ -2,6 +2,8 @@
 M = 9;
 
 % Messages' nature (sequence imposee, sequence generee aleatoirement, ...) 
+Ms = transpose([1, 0, 1, 1, 0]);
+Md = transpose([[0,1,1,0]; [1,1,1,0]; [1,1,1,0]; [1,0,1,0]]);
 
 % Number of modules (K) 
 K = 3;
@@ -29,4 +31,5 @@ Gamma = 100;
 % Analog filter parameters : nature, order, oscillation in bandwidth(ripple), attenuation outside the bandwidth 
 
 % Threshold V for the simplified receiver
+
 % NB : The choice for the threshold must be made wisely with respect to the received signal's dynamic
