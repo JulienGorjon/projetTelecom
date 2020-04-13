@@ -36,15 +36,27 @@ Mt(Mt==0)=-1;
 %           length is N_T(2) - N_T(1) + 1 input samples (or 
 %           (N_T(2) - N_T(1))* RATE + 1 output samples).
 %           => = L    N.B : window is [-L*Tb:L*Tb]
-g0 = rcosfir(Alpha, 2 , Beta, Tb);
-halfPeriod = (length(g0)-1)/2;
+g0 = rcosfir(Alpha, L , Beta, Tb);
+halfPeriod = L*Beta;
 time = -halfPeriod:1:halfPeriod;
 
-Omega = 4*pi/Beta   %Omega_n = 2*pi*2n/Tb
+Omega = 4*pi/Beta;   %Omega_n = 2*pi*2n/Tb
 g1 =  g0 .* cos(Omega*1*time);
 g3 =  g0 .* cos(Omega*2*time);
 g4 =  g0 .* cos(Omega*3*time);
 
 plot(time,g0,time,g1) % plot first two filters pulse responses 
 
-
+s=[];
+for k = 1:length(Mt)
+    symbolFIR = g1 * Mt(k);
+    if length(s) == 0
+        s = zeros(1,(4*Beta)+1);
+    else 
+        symbolFIR = [zeros(1,length(s)-(2*Beta)-1), symbolFIR];
+        s = [s,zeros(1,2*Beta)];
+    end
+    s = s + symbolFIR;
+end
+figure
+plot(s)

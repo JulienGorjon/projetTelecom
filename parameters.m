@@ -18,13 +18,14 @@ R = 1 / Tb;
 % Oversampling factor of the FIR ? 
 Beta = 64;          % ( >= 4N-2)
 
-% Parameters of the FIR: ?, L, nb 
+% Parameters of the FIR: alpha, L, nb 
 Alpha = 0.4;
+L = 2;
 
 % Transmitted power over the wire Pt, impedance of the wire Zc 
 
-% Oversampling factor for continuous signals (?) 
-Gamma = 100;
+% Oversampling factor for continuous signals 
+Gamma = 100;  % aribitrary... enough ? 
 
 % Signal to noise ratio on receiver Eb/N0
 
