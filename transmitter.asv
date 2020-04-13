@@ -7,6 +7,7 @@ Mt(Mt==0)=-1;
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Generate a sampled s(t) by using a FIR filter g(t) and then interpolate it with a DAC
 % followed by a low-pass filter.
+%
 % One FIR p(t) for each channel :
 % channel 0 : p_0(t) = g(t)
 % channel n : p_n(t) = g(t) * cos(Omega_n*t) where Omega_n = 2*pi*2n/Tb
@@ -34,6 +35,14 @@ Mt(Mt==0)=-1;
 %           a vector, it specifies the extent of the filter.  In this case, the filter 
 %           length is N_T(2) - N_T(1) + 1 input samples (or 
 %           (N_T(2) - N_T(1))* RATE + 1 output samples).
-%           => = ??????
-rcosfir(Alpha, [-2,2] , Beta, Tb)
+%           => = L    N.B : window is [-L*Tb:L*Tb]
+g1 = rcosfir(Alpha, 2 , Beta, Tb);
+
+Omega_1 = 2*pi*2n/Tb
+g2 = g1 * cos
+
+halfPeriod = (length(g1)-1)/2;
+time = -halfPeriod:1:halfPeriod;
+plot(time,g1) % plot pulse response
+
 

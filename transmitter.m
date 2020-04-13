@@ -35,6 +35,16 @@ Mt(Mt==0)=-1;
 %           a vector, it specifies the extent of the filter.  In this case, the filter 
 %           length is N_T(2) - N_T(1) + 1 input samples (or 
 %           (N_T(2) - N_T(1))* RATE + 1 output samples).
-%           => = L ? 2 in PDF example
-g = rcosfir(Alpha, 2 , Beta, Tb)
+%           => = L    N.B : window is [-L*Tb:L*Tb]
+g0 = rcosfir(Alpha, 2 , Beta, Tb);
+halfPeriod = (length(g0)-1)/2;
+time = -halfPeriod:1:halfPeriod;
+
+Omega = 4*pi/Beta   %Omega_n = 2*pi*2n/Tb
+g1 =  g0 .* cos(Omega*1*time);
+g3 =  g0 .* cos(Omega*2*time);
+g4 =  g0 .* cos(Omega*3*time);
+
+plot(time,g0,time,g1) % plot first two filters pulse responses 
+
 
