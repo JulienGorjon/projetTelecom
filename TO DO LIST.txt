@@ -16,7 +16,7 @@
 
 
 2) Calcul de variables utiles d´ependant de ces parametres:
-    – Duree d’echantillon numerique Tn = Tb/β, dur´ee d’echantillon analogique Ta = Tn/γ 
+    – Duree d’echantillon numerique Tn = Tb/β, duree d’echantillon analogique Ta = Tn/γ 
     – Vecteur de fr´equences f = [0,···, 0.5 Ta ] 
     – Frequences centrales fn
     – etc.
