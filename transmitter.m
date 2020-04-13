@@ -5,9 +5,14 @@ Mt = [Ms;Md(:,1)];             % temporary work with the msg for the channel N=1
 Mt(Mt==0)=-1;
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Generate a sampled s(t) by using a FIR and then interpolate it with a DAC
-% followed by a low-pass filter
-% (one fir for each channel)
+% Generate a sampled s(t) by using a FIR filter g(t) and then interpolate it with a DAC
+% followed by a low-pass filter.
+%
+% One FIR p(t) for each channel :
+% channel 0 : p_0(t) = g(t)
+% channel n : p_n(t) = g(t) * cos(Omega_n*t) where Omega_n = 2*pi*2n/Tb
+%
+% => for k symbols : s_n(t) = A * a_n(k) * p_n(t - k*Tb)
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
@@ -23,12 +28,13 @@ Mt(Mt==0)=-1;
 %   - R : the rolloff factor, determines the width of the transition 
 %         band.  R has no units.  The transition band is (1-R)/(2*T) < |f| < 
 %        (1+R)/(2*T). 
-%        => = ??????
+%        => = alpha ("facteur de descente")
 %
 %   - N_T : is a scalar or a vector of length 2.  If N_T is specified as a 
 %           scalar, then the filter length is 2 * N_T + 1 input samples.  If N_T is 
 %           a vector, it specifies the extent of the filter.  In this case, the filter 
 %           length is N_T(2) - N_T(1) + 1 input samples (or 
 %           (N_T(2) - N_T(1))* RATE + 1 output samples).
-%           => = ??????
+%           => = L ? 2 in PDF example
+g = rcosfir(Alpha, 2 , Beta, Tb)
 
