@@ -22,6 +22,9 @@ Beta = 64;          % ( >= 4N-2)
 Alpha = 0.4;
 L = 2;
 
+% attenuation factor over the cable
+cableAlpha = 0.8
+
 % Transmitted power over the wire Pt, impedance of the wire Zc 
 
 % Oversampling factor for continuous signals 

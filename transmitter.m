@@ -1,6 +1,6 @@
 % TO DO :
 %--------
-% Modify the code to use COLUMN vector for signals 
+% Modify the code to use COLUMN vector for signals as asked in the PDF
 
 
 
@@ -63,3 +63,6 @@ s = interpft(s, length(s)*Gamma);
 figure
 plot(s)
 title('Modulated analog signal s(t)')
+
+% TO DO : modulate the amplitude to get the desired power through the cable
+% with impedance Zc

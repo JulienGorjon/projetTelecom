@@ -9,3 +9,6 @@ Ta = Tn / Gamma;
 % central qrequencies fn
 
 % ... 
+
+% random between 0 and Tb (Beta*Gamma points for one period Tb)
+cablePhaseShift = round(rand * Beta * Gamma)
