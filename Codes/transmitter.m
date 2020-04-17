@@ -68,9 +68,9 @@ bitsTimeIndexes = L:1:length(Mt)-1+L;
 bitsTimeIndexes = bitsTimeIndexes * Beta * Gamma;
 
 figure
-plot(time,s)
+plot(s_time,s)
 hold on
-scatter(time(bitsTimeIndexes),s(bitsTimeIndexes))
+scatter(s_time(bitsTimeIndexes),s(bitsTimeIndexes))
 title('Modulated analog signal s(t)')
 
 
