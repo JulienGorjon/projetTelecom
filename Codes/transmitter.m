@@ -58,22 +58,50 @@ for k = 1:length(Mt)
     s = s + symbolFIR;
 end
 
+q=[];
+for k = 1:length(Mt)
+    symbolFIR = p(:,1) .* Mt(k);
+    if length(q) == 0
+        q = zeros((2*L*Beta)+1,1);
+    else 
+        symbolFIR = [zeros(length(q)-((2*L)-1)*Beta-1, 1); symbolFIR];
+        q = [q;zeros(Beta,1)];
+    end
+    q = q + symbolFIR;
+end
 % interpolate with FFT to get Gamma times more points
-s = interpft(s, length(s)*Gamma);
+s = interpft(s+q, length(s)*Gamma);
 
+% Time vector to plot the output signal
 periodNumber = 4 + length(Mt)-1;
 s_time = 0 : Tb/Beta/Gamma : (length(s)*Tb/Beta/Gamma)-Tb/Beta/Gamma;
 
+
 bitsTimeIndexes = L:1:length(Mt)-1+L;
 bitsTimeIndexes = bitsTimeIndexes * Beta * Gamma;
+symbols_time = s_time(bitsTimeIndexes);
+symbols_value = s(bitsTimeIndexes)
 
 figure
 plot(s_time,s)
 hold on
-scatter(s_time(bitsTimeIndexes),s(bitsTimeIndexes))
-title('Modulated analog signal s(t)')
+scatter(symbols_time, symbols_value)
+title('Transmitter total output signal')
+hold off
 
 
+% FFT on the output signal
+T = Tb/Beta/Gamma;
+Fs = 1/T; 
+L = length(s); 
+Y = fft(s);
+FFT = abs(Y/L);
+FFT = FFT(1:200+1);
+%P1(2:end-1) = 2*P1(2:end-1);
+f = Fs*(0:(200))/L;
+figure
+plot(f,FFT)
+title("FFT of the total output signal")
 
 % TO DO : modulate the amplitude to get the desired power through the cable
 % with impedance Zc

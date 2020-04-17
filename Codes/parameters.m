@@ -3,14 +3,14 @@ M = 9;
 
 % Messages' nature (sequence imposee, sequence generee aleatoirement, ...) 
 Ms = transpose([1, 0, 1, 1, 0]);
-Md = transpose([[0,1,1,0]; [1,1,1,0]; [1,1,1,0]; [1,0,1,0]]);
+Md = transpose([[0,1,1,0]; [1,1,1,0]; [0,0,1,0]; [1,0,1,0]]);
 
 % Number of modules (K) 
 K = 3;
 
 % Number of available physical ressources (N) 
 N = 4;
-n = 1
+n = 2;
 % Bit rate or bit duration (R = 1/Tb) 
 Tb = 0.001;
 R = 1 / Tb;
