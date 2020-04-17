@@ -31,7 +31,7 @@ cableAlpha = 0.8;
 % Transmitted power over the wire Pt, impedance of the wire Zc 
 
 % Oversampling factor for continuous signals 
-Gamma = 100;  % aribitrary... enough ? 
+Gamma = 100;  
 
 % Signal to noise ratio on receiver Eb/N0
 
