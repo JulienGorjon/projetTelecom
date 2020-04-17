@@ -10,7 +10,7 @@ K = 3;
 
 % Number of available physical ressources (N) 
 N = 4;
-
+n = 1
 % Bit rate or bit duration (R = 1/Tb) 
 Tb = 0.001;
 R = 1 / Tb;
@@ -23,7 +23,7 @@ Alpha = 0.4;
 L = 2;
 
 % attenuation factor over the cable
-cableAlpha = 0.8
+cableAlpha = 0.8;
 
 % Transmitted power over the wire Pt, impedance of the wire Zc 
 
