@@ -33,26 +33,27 @@ Mt(Mt==0)=-1;
 %           a vector, it specifies the extent of the filter.  In this case, the filter 
 %           length is N_T(2) - N_T(1) + 1 input samples (or 
 %           (N_T(2) - N_T(1))* RATE + 1 output samples).            => = L    N.B : window is [-L*Tb:L*Tb]
-g0 = rcosfir(Alpha, L , Beta, Tb);
-halfPeriod = L*Beta;
-time = -halfPeriod:1:halfPeriod;
+g0 = transpose(rcosfir(Alpha, L , Beta, Tb));
+FIR_time = transpose(-L*Tb:Tb/Beta:L*Tb);
 
-Omega = 4*pi/Beta;   %Omega_n = 2*pi*2n/Tb
-g1 =  g0 .* cos(Omega*1*time);
-g3 =  g0 .* cos(Omega*2*time);
-g4 =  g0 .* cos(Omega*3*time);
 
-plot(time,g0,time,g1) % plot first two filters pulse responses 
-title('Two first FIR filters pulse responses')
+modulationFactors = cos(FIR_time * ((1:1:N-1) .* (4*pi/Tb)));   %cos(Omega_n*time) where Omega_n = 2*pi*2n/Tb
+p = [g0,g0 .* modulationFactors];
 
+
+figure
+plot(FIR_time,p(:,1),FIR_time,p(:,2)) % plot first two filters pulse responses 
+title('Two first FIR filters')
+
+% modulate the symbols with the filter of the choosed module n 
 s=[];
 for k = 1:length(Mt)
-    symbolFIR = g0 * Mt(k);
+    symbolFIR = p(:,n) .* Mt(k);
     if length(s) == 0
-        s = zeros(1,(2*halfPeriod)+1);
+        s = zeros((2*L*Beta)+1,1);
     else 
-        symbolFIR = [zeros(1,length(s)-halfPeriod-1), symbolFIR];
-        s = [s,zeros(1,2*Beta)];
+        symbolFIR = [zeros(length(s)-((2*L)-1)*Beta-1, 1); symbolFIR];
+        s = [s;zeros(Beta,1)];
     end
     s = s + symbolFIR;
 end
@@ -60,9 +61,19 @@ end
 % interpolate with FFT to get Gamma times more points
 s = interpft(s, length(s)*Gamma);
 
+periodNumber = 4 + length(Mt)-1;
+s_time = 0 : Tb/Beta/Gamma : (length(s)*Tb/Beta/Gamma)-Tb/Beta/Gamma;
+
+bitsTimeIndexes = L:1:length(Mt)-1+L;
+bitsTimeIndexes = bitsTimeIndexes * Beta * Gamma;
+
 figure
-plot(s)
+plot(s_time,s)
+hold on
+scatter(s_time(bitsTimeIndexes),s(bitsTimeIndexes))
 title('Modulated analog signal s(t)')
+
+
 
 % TO DO : modulate the amplitude to get the desired power through the cable
 % with impedance Zc

@@ -9,7 +9,10 @@ Md = transpose([[0,1,1,0]; [1,1,1,0]; [1,1,1,0]; [1,0,1,0]]);
 K = 3;
 
 % Number of available physical ressources (N) 
-N = 4;
+N = 4
+
+% choosed module that send the message (from 1 to N)
+n = 1;
 
 % Bit rate or bit duration (R = 1/Tb) 
 Tb = 0.001;
@@ -23,7 +26,7 @@ Alpha = 0.4;
 L = 2;
 
 % attenuation factor over the cable
-cableAlpha = 0.8
+cableAlpha = 0.8;
 
 % Transmitted power over the wire Pt, impedance of the wire Zc 
 
