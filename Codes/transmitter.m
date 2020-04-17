@@ -47,17 +47,24 @@ title('Two first FIR filters')
 
 % modulate the symbols with the filter of the choosed module n 
 s=[];
-for k = 1:length(Mt)
-    symbolFIR = p(:,n) .* Mt(k);
-    if length(s) == 0
-        s = zeros((2*L*Beta)+1,1);
-    else 
-        symbolFIR = [zeros(length(s)-((2*L)-1)*Beta-1, 1); symbolFIR];
-        s = [s;zeros(Beta,1)];
+for n = modules
+    q=[];
+    for k = 1:length(Mt)
+        symbolFIR = p(:,n) .* Mt(k);
+        if length(q) == 0
+            q = zeros((2*L*Beta)+1,1);
+        else 
+            symbolFIR = [zeros(length(q)-((2*L)-1)*Beta-1, 1); symbolFIR];
+            q = [q;zeros(Beta,1)];
+        end
+        q = q + symbolFIR;
     end
-    s = s + symbolFIR;
+    if length(s) == 0
+        s = q;
+    else
+        s = s + q;
+    end
 end
-
 q=[];
 for k = 1:length(Mt)
     symbolFIR = p(:,1) .* Mt(k);
@@ -76,11 +83,11 @@ s = interpft(s+q, length(s)*Gamma);
 periodNumber = 4 + length(Mt)-1;
 s_time = 0 : Tb/Beta/Gamma : (length(s)*Tb/Beta/Gamma)-Tb/Beta/Gamma;
 
-
+% Time and value vectors for the symbols
 bitsTimeIndexes = L:1:length(Mt)-1+L;
 bitsTimeIndexes = bitsTimeIndexes * Beta * Gamma;
 symbols_time = s_time(bitsTimeIndexes);
-symbols_value = s(bitsTimeIndexes)
+symbols_value = s(bitsTimeIndexes);
 
 figure
 plot(s_time,s)
@@ -95,12 +102,12 @@ T = Tb/Beta/Gamma;
 Fs = 1/T; 
 L = length(s); 
 Y = fft(s);
-FFT = abs(Y/L);
-FFT = FFT(1:200+1);
-%P1(2:end-1) = 2*P1(2:end-1);
+double_sided = abs(Y/L);
+single_sided = double_sided(1:200+1);
+single_sided(2:end-1) = 2*single_sided(2:end-1); % don't know why but from the doc
 f = Fs*(0:(200))/L;
 figure
-plot(f,FFT)
+plot(f,single_sided)
 title("FFT of the total output signal")
 
 % TO DO : modulate the amplitude to get the desired power through the cable

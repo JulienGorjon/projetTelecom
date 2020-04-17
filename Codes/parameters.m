@@ -10,7 +10,10 @@ K = 3;
 
 % Number of available physical ressources (N) 
 N = 4;
-n = 2;
+
+% List of the module numbers that will send a message 
+modules = [1,2,3,4];
+
 % Bit rate or bit duration (R = 1/Tb) 
 Tb = 0.001;
 R = 1 / Tb;
