@@ -1,15 +1,15 @@
 %r is the noised signal
-window1 = analogFilter(r, ); %cutoff frequency
-window2 = analogFilter(r, );
-window3 = analogFilter(r, );
-window4 = analogFilter(r, );
-
+window1 = analogFilter(r, 1/Tb); %1/Tb the cutoff frequency
+window2 = analogFilter(r, [2/Tb, 3/Tb]);
+window3 = analogFilter(r, [4/Tb, 5/Tb]);
+window4 = analogFilter(r, [6/Tb, 7/Tb]);
 
 function[r_n] = analogFilter(signal, frequency)
     %filter butterworth of order 3, in order to minimize attenuation of the
     %nth canal and
-   num, den = butter(3, frequency); %lowpass filter if frequency is a number, bandpass filter if it is a 2 element vector
-   %TODO : check cheby1 cheby2 ellip and besself filters. "Les familles de ?ltres analogiques physiquement r´ealisables 
+   num, den = cheby1(3, 1, frequency); %lowpass filter if frequency is a scalar, bandpass filter if it is a 2 element vector
+   %1 is Rp, which is ripple in passband (in dB)
+   %TODO : check butter cheby2 ellip and besself filters. "Les familles de ?ltres analogiques physiquement r´ealisables 
    %les plus connues sont les ?ltres de Butterworth, Chebyshev, Bessel et les ?ltres elliptiques. L’ordre kn du ?ltre 
    %(qui d´etermine le nombre de cellules ´el´ementaires `a mettre en cascade), les fr´equences de coupure `a 3 dB f? n
    %et f+ n , le niveau d’oscillation dans la bande passante (’ripple’) et l’a?aiblissement hors-bande sont autant de 
