@@ -40,40 +40,68 @@ FIR_time = transpose(-L*Tb:Tb/Beta:L*Tb);
 modulationFactors = cos(FIR_time * ((1:1:N-1) .* (4*pi/Tb)));   %cos(Omega_n*time) where Omega_n = 2*pi*2n/Tb
 p = [g0,g0 .* modulationFactors];
 
-
+FIR_time = FIR_time / Tb;  % time axis as T graduation
 figure
-plot(FIR_time,p(:,1),FIR_time,p(:,2)) % plot first two filters pulse responses 
-title('Two first FIR filters')
+plot(FIR_time,p(:,1),FIR_time,p(:,2),FIR_time,p(:,3)) % plot first two filters pulse responses 
+title('Trois premiers FIR')
+xlabel("[ T ]")
 
 % modulate the symbols with the filter of the choosed module n 
 s=[];
-for k = 1:length(Mt)
-    symbolFIR = p(:,n) .* Mt(k);
-    if length(s) == 0
-        s = zeros((2*L*Beta)+1,1);
-    else 
-        symbolFIR = [zeros(length(s)-((2*L)-1)*Beta-1, 1); symbolFIR];
-        s = [s;zeros(Beta,1)];
+for n = modules
+    q=[];
+    for k = 1:length(Mt)
+        symbolFIR = p(:,n) .* Mt(k);
+        if length(q) == 0
+            q = zeros((2*L*Beta)+1,1);
+        else 
+            symbolFIR = [zeros(length(q)-((2*L)-1)*Beta-1, 1); symbolFIR];
+            q = [q;zeros(Beta,1)];
+        end
+        q = q + symbolFIR;
     end
-    s = s + symbolFIR;
+    if length(s) == 0
+        s = q;
+    else
+        s = s + q;
+    end
 end
 
 % interpolate with FFT to get Gamma times more points
 s = interpft(s, length(s)*Gamma);
 
+% Time vector to plot the output signal
 periodNumber = 4 + length(Mt)-1;
 s_time = 0 : Tb/Beta/Gamma : (length(s)*Tb/Beta/Gamma)-Tb/Beta/Gamma;
 
+% Time and value vectors for the symbols
 bitsTimeIndexes = L:1:length(Mt)-1+L;
 bitsTimeIndexes = bitsTimeIndexes * Beta * Gamma;
+symbols_time = s_time(bitsTimeIndexes);
+symbols_value = s(bitsTimeIndexes);
 
 figure
 plot(s_time,s)
 hold on
-scatter(s_time(bitsTimeIndexes),s(bitsTimeIndexes))
-title('Modulated analog signal s(t)')
+scatter(symbols_time, symbols_value)
+title('Superposition des signaux')
+xlabel("[ s ]")
+hold off
 
 
+% FFT on the output signal
+T = Tb/Beta/Gamma;
+Fs = 1/T; 
+L = length(s); 
+Y = fft(s);
+double_sided = abs(Y/L);
+single_sided = double_sided(1:100+1);
+single_sided(2:end-1) = 2*single_sided(2:end-1); % don't know why but from the doc
+f = Fs*(0:(100))/L;
+figure
+plot(f,single_sided)
+title("Transformée de Fourrier")
+xlabel("[ Hz ]")
 
 % TO DO : modulate the amplitude to get the desired power through the cable
 % with impedance Zc
