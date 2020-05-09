@@ -29,9 +29,10 @@ L = 2;
 cableAlpha = 0.8;
 
 % Transmitted power over the wire Pt, impedance of the wire Zc 
-
+Pt = 10;
+Zc = 1;
 % Oversampling factor for continuous signals 
-Gamma = 100;  
+Gamma = 2;  
 
 % Signal to noise ratio on receiver Eb/N0
 
