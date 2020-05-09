@@ -95,9 +95,10 @@ Fs = 1/T;
 L = length(s); 
 Y = fft(s);
 double_sided = abs(Y/L);
-single_sided = double_sided(1:100+1);
+crop = 100;   % L/2 instead of 100 in doc but result too much zoomed out
+single_sided = double_sided(1:crop+1);   
 single_sided(2:end-1) = 2*single_sided(2:end-1); % don't know why but from the doc
-f = Fs*(0:(100))/L;
+f = Fs*(0:(crop))/L;
 figure
 plot(f,single_sided)
 title("Transformée de Fourrier")
