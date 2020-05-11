@@ -57,8 +57,8 @@ for n = modules
         
         % shift the the FIR symbol to right, and add zeros to the current
         % signal q so that they have the same length and will be superposed
-        % correctly when they're we will sum the new FIR symbol to the signal
-        if length(q) == 0
+        % correctly when we will sum the new FIR symbol to the signal
+        if isempty(q)
             q = zeros((2*L*Beta)+1,1);
         else 
             symbolFIR = [zeros(length(q)-((2*L)-1)*Beta-1, 1); symbolFIR];
@@ -73,7 +73,7 @@ for n = modules
     
     
     % this will sum all the signals for the following FFT
-    if length(s) == 0
+    if isempty(s)
         s = q;
     else
         s = s + q;
@@ -81,16 +81,16 @@ for n = modules
 end
 
 
-leveledSignals=[];
+% Level adjustment on each signal for wanter power Pt
 for i = 1:length(modules)
     signal= signals(:,i);
-    signalPower = sum(signal.^2)/Zc;
+    signalPower = sum(signal.^2)/(length(signal)*Zc);
     scaleFactor = sqrt(Pt/signalPower); % compare to wanted power
     leveledSignal = signal*scaleFactor; % if (u^2/z)*4 = Pt then (u*sqrt(4))^2/z = Pt 
-    
-    leveledSignals=[leveledSignals,leveledSignal];
+    signals(:,i) = leveledSignal;       % replace
 end
-signals = leveledSignals;
+
+
 
 
 %%% --- ALL THIS CODE IS ONLY FOR DEVELOPMENT --- %%%%

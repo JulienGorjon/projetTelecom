@@ -22,7 +22,7 @@ R = 1 / Tb;
 Beta = 64;          % ( >= 4N-2)
 
 % Parameters of the FIR: alpha, L, nb 
-Alpha = 0.4;
+Alpha = 0.4; % ROLL-OFF factor
 L = 2;
 
 % attenuation factor over the cable
@@ -31,6 +31,7 @@ cableAlpha = 0.8;
 % Transmitted power over the wire Pt, impedance of the wire Zc 
 Pt = 10;
 Zc = 1;
+
 % Oversampling factor for continuous signals 
 Gamma = 2;  
 
