@@ -1,25 +1,8 @@
-% TO DO :
-%--------
-% Check the code uses COLUMN vector for signals as asked in the PDF
-
-
-
 % total msg = start + data
 Mt = [Ms;Md(:,1)];             % temporary work with the msg for the channel N=1
 
 % msg as symbols -1,1 for bits 0,1
 Mt(Mt==0)=-1;
-
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Generate a sampled s(t) by using a FIR filter g(t) and then interpolate it with a DAC
-% followed by a low-pass filter.
-%
-% One FIR p(t) for each channel :
-% channel 0 : p_0(t) = g(t)
-% channel n : p_n(t) = g(t) * cos(Omega_n*t) where Omega_n = 2*pi*2n/Tb
-%
-% => for k symbols : s_n(t) = A * a_n(k) * p_n(t - k*Tb)
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
 % rcosfir(R,N_T,RATE,T)   info here : http://read.pudn.com/downloads67/doc/comm/240139/mfiles/Chapter10/programs/prgs/depfun/rcosfir.m__.htm
@@ -34,7 +17,7 @@ Mt(Mt==0)=-1;
 %           length is N_T(2) - N_T(1) + 1 input samples (or 
 %           (N_T(2) - N_T(1))* RATE + 1 output samples).            => = L    N.B : window is [-L*Tb:L*Tb]
 g0 = transpose(rcosfir(Alpha, L , Beta, Tb));
-FIR_time = transpose(-L*Tb:Tb/Beta:L*Tb);
+FIR_time = transpose(-L*Tb:Tnum:L*Tb);
 
 
 modulationFactors = cos(FIR_time * ((1:1:N-1) .* (4*pi/Tb)));   %cos(Omega_n*time) where Omega_n = 2*pi*2n/Tb
@@ -101,7 +84,7 @@ end
 
     % Time vector to plot the output signal
     periodNumber = 4 + length(Mt)-1;
-    s_time = 0 : Tb/Beta/Gamma : (length(s)*Tb/Beta/Gamma)-Tb/Beta/Gamma;
+    s_time = 0 : Tanal : (length(s)*Tanal)-Tanal;
 
     % Time and value vectors for the symbols
     bitsTimeIndexes = L:1:length(Mt)-1+L;
@@ -119,19 +102,9 @@ end
 
 
     % FFT on the output signal
-    T = Tb/Beta/Gamma;
-    Fs = 1/T; 
-    L = length(s); 
-    Y = fft(s);
-    double_sided = abs(Y/L);
-    crop = 100;   % L/2 instead of 100 in doc but result too much zoomed out
-    single_sided = double_sided(1:crop+1);   
-    single_sided(2:end-1) = 2*single_sided(2:end-1); % don't know why but from the doc
-    f = Fs*(0:(crop))/L;
     figure
-    plot(f,single_sided)
-    title("Transformée de Fourrier")
-    xlabel("[ Hz ]")
+    plotFFT(s, Tanal, 0.065)
+    %title("Transformée de Fourrier")
+    %xlabel("[ Hz ]")
 
-    % TO DO : modulate the amplitude to get the desired power through the cable
-    % with impedance Zc
+

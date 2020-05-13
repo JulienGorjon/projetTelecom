@@ -28,8 +28,7 @@ cutoffFreq = 2*N/Tb;
 sampleFreq = 1/(Tn/Gamma);
 [a,b] = butter(1,cutoffFreq/(sampleFreq/2) ,'low');
 noise = filter(a, b, noise);
-figure
-plot(noise)
+
 
 % MEASUREMENT OF RESULTING Eb/N0 (energy per bit to noise power spectral density
 % ratio)
@@ -52,6 +51,7 @@ noise = noise / sqrt(factor);               % voltage/sqrt(-factor-) gives power
 figure
 plot(noise)
 
+s = s + noise;
 figure
-plot(s+noise)
-title('Phase shifted and attenuated signal')
+plot(s)
+title('Bruit ajouté sur le signal')

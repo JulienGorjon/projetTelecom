@@ -7,7 +7,6 @@ function [] = plotFFT(signal, T, cropFactor)   % cropFactor between 0 and 1 to l
     single_sided = double_sided(1:crop+1);   
     single_sided(2:end-1) = 2*single_sided(2:end-1); % don't know why but from the doc
     f = Fs*(0:(crop))/L;
-    figure
     plot(f,single_sided)
     xlabel("[ Hz ]")
 end 

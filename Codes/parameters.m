@@ -20,6 +20,11 @@ R = 1 / Tb;
 
 % Oversampling factor of the FIR ? 
 Beta = 64;          % ( >= 4N-2)
+Tnum = Tb/Beta;
+
+% Oversampling factor for continuous signals 
+Gamma = 2; 
+Tanal = Tb/Beta/Gamma;
 
 % Parameters of the FIR: alpha, L, nb 
 Alpha = 0.4; % ROLL-OFF factor
@@ -31,9 +36,7 @@ cableAlpha = 0.8;
 % Transmitted power over the wire Pt, impedance of the wire Zc 
 Pt = 10;
 Zc = 1;
-
-% Oversampling factor for continuous signals 
-Gamma = 2;  
+ 
 
 % Signal to noise ratio on receiver Eb/N0
 
