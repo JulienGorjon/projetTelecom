@@ -20,15 +20,34 @@ end
 % ADD NOISE WITH RESULTING Eb/N0 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 noise = randn(length(s),1);
-figure
+subplot(2,2,1);
 plot(noise)
+title("Bruit blanc")
+
+subplot(2,2,3);
+plotFFT(noise, Tanal, 0.95)
+title("FFT du bruit blanc")
 
 % LOW PASS filter the noise
 cutoffFreq = 2*N/Tb;
 sampleFreq = 1/(Tn/Gamma);
-[a,b] = butter(1,cutoffFreq/(sampleFreq/2) ,'low');
-noise = filter(a, b, noise);
+%[b,a] = butter(1,cutoffFreq/(sampleFreq/2) ,'low');
+[b,a] = butter(1,cutoffFreq ,'low','s');
+%noise = filter(b, a, noise);
+   filter_transfer_freq = freqs(b,a);%,length(s));
+   filter_transfer = ifft(filter_transfer_freq, 'symmetric');
+   noise = conv(noise,filter_transfer,'same'); %convolution product
 
+subplot(2,2,2);
+plot(noise)
+title("Bruit coloré")
+
+subplot(2,2,4);
+plotFFT(noise, Tanal, 0.95)
+title("FFT du bruit coloré")
+
+figure
+freqs(b,a)
 
 % MEASUREMENT OF RESULTING Eb/N0 (energy per bit to noise power spectral density
 % ratio)
@@ -48,8 +67,7 @@ wantedEb_over_N0 = 100;                     % TODO : init in parameters and in d
 factor = wantedEb_over_N0 / Eb_over_N0;     % noise power is -factor- times to high
 noise = noise / sqrt(factor);               % voltage/sqrt(-factor-) gives power -factor- smaller
 
-figure
-plot(noise)
+
 
 s = s + noise;
 figure
