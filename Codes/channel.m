@@ -1,8 +1,4 @@
-% Attenuation and phase shift
-s = [zeros( cablePhaseShift,1); s*cableAlpha];
-%figure
-%plot(s)
-%title('Phase shifted and attenuated signal')
+
 
 % SUM OF SHIFTED ATTENUATED AND SHIFTED SIGNALS %
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
@@ -22,7 +18,7 @@ end
 
  
 
-% ADD NOISE WITH RESULTING Eb/N0 % 
+% ADD NOISE WITH CHOOSED Eb/N0 % 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 noise = randn(length(s),1);
 subplot(2,2,1);
@@ -77,6 +73,6 @@ noise = noise / sqrt(factor);               % voltage/sqrt(-factor-) gives power
 s = s + noise;
 figure
 plot(s)
-title('Bruit ajoutï¿½ sur le signal')
+title('Bruit ajouté sur le signal')
 
 r = s; %input to receiver
