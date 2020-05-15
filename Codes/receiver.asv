@@ -45,9 +45,7 @@ title("Filtrage, fenêtre 3")
 xlabel("[ Hz ]")
 
 %compute values based on the windows
-WINDOW = 1:1:10; % declare a proper window to test the receptor
-scale = 1;
-values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms);
+values = simplifiedReceptor();
 %compute error rate
 errors = xor(Md, values);
 error_rate = nnz(errors)/length(values)
@@ -100,7 +98,7 @@ end
 %nb is the quantization step
 %1/Tn is the sampling rate
 %endTime = max (symbols_time)
-function[values] = simplifiedReceptor(window, Tn, symbolsTime, scale, pilotSeq)
+function[values] = simplifiedReceptor(window, Tn, symbolsTime, nb, scale, pilotSeq)
 %scaling signal, return to range [-1;1]
 window = window/scale;
 %Sampling to original rate
