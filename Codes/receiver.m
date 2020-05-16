@@ -45,11 +45,14 @@ title("Filtrage, fenêtre 3")
 xlabel("[ Hz ]")
 
 %compute values based on the windows
-WINDOW = 1:1:10; % declare a proper window to test the receptor
-scale = 1;
-values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms);
+WINDOW = 1:1:length(symbols_time); % declare a proper window to test the receptor
+scale = 1; %compute the right scale
+Ms
+values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal);
 %compute error rate
-errors = xor(Md, values);
+lengthValues = length(values)
+Md
+errors = xor(Md(1), values);
 error_rate = nnz(errors)/length(values)
 
 function[r_n] = analogFilter(signal, frequency, Fs)
@@ -100,27 +103,38 @@ end
 %nb is the quantization step
 %1/Tn is the sampling rate
 %endTime = max (symbols_time)
-function[values] = simplifiedReceptor(window, Tn, symbolsTime, scale, pilotSeq)
+function[values] = simplifiedReceptor(window, Tn, symbolsTime, scale, pilotSeq, Tanal) %version 1 : scale, sampling, sync, quantization, decision 
 %scaling signal, return to range [-1;1]
 window = window/scale;
-%Sampling to original rate
-endTime = symbolsTime(end); %last value is the maximum value and the last sample time
-tSamp = 0:Tn:endTime;
-sampled = interp1(symbolsTime, window, tSamp, 'spline');
 %3 level quantization
 partition = [-1, 1]; % if value < -1, qValue = 0, if -1 < value < 1, qValue = 1, if  value > 1, qValue = 2
-qValues = quantiz(sampled, partition);
-%sync by observing rising and falling edge with pilot sequence
-
+qValues = quantiz(window, partition); % = quantiz(sampled, partition);
 %symbol estimation
+estimValues = ones([1, length(qValues)]).*(-1);
 for k = 1:length(qValues)
    if qValues(k) == 0
-       values(k) = 0;
+       estimValues(k) = 0;
    elseif qValues(k) == 2
-       values(k) = 1;
+       estimValues(k) = 1;
    else %undetermined, error risk
-       values(k) = values(k-1);
+       if k > 1
+            estimValues(k) = estimValues(k-1);
+       else
+           estimValues(k) = 0;
+       end
    end           
 end
+
+%sync by finding time of maximum correlation between pilote sequence and
+%the signal
+correl = xcorr(estimValues, pilotSeq);
+[maxVal, indexMax] = max(correl);
+startTime = indexMax * Tanal;
+%Sampling to original rate
+endTime = symbolsTime(end); %last value is the maximum value and the last sample time
+tSamp = startTime:Tn:endTime;
+estimValues
+values = interp1(symbolsTime, estimValues, tSamp, 'spline');
+
 
 end
