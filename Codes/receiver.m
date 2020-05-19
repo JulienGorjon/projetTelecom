@@ -64,9 +64,11 @@ function[r_n] = analogFilter(signal, frequency, Fs)
            frequency = round(frequency);
        end
        w = 2*pi*logspace(0, log10(frequency), 100);
+       w2 = 2*pi*logspace(0, log10(frequency*2), 100);
        ftype = 'low';
    elseif length(frequency) == 2
        w = 2*pi*logspace(log10(frequency(1)), log10(frequency(2)), 100); 
+       w2 = 2*pi*logspace(log10(frequency(1)), log10(frequency(2)*2), 100); 
    else
        sprintf("Incorrect frequency format");
    end
@@ -81,19 +83,18 @@ function[r_n] = analogFilter(signal, frequency, Fs)
    %param`etres `a prendre ´eventuellement en compte lors du
    %dimensionnement de ces ?ltres."
    filter_transfer_freq = freqs(num, den, w);
-   mag = abs(filter_transfer_freq);
-   phase = angle(filter_transfer_freq);
-   phasedeg = phase*180/pi;
-
-   subplot(2,1,1)
-   loglog(w,mag)
-   grid on
-   xlabel('Frequency (rad/s)')
-   ylabel('Magnitude')
-
+  
    i_filter_transfer_freq = imag(filter_transfer_freq);
    r_i_filter_transfer_freq = [filter_transfer_freq i_filter_transfer_freq] %concatenate both arrays
-   filter_transfer = ifft(i_filter_transfer_freq);
+   w2 = [w (w+w(end))]
+   mag = abs(r_i_filter_transfer_freq);
+   plot(w2,mag)
+   grid on
+   hold on
+   xlabel('Frequency (rad/s)')
+   ylabel('Magnitude')
+   %hold off
+   filter_transfer = ifft(r_i_filter_transfer_freq);
    r_n = conv(filter_transfer, signal); %convolution product
 end
 
