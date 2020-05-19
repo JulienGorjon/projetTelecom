@@ -69,7 +69,7 @@ for i = 1:length(modules)
     signal= signals(:,i);
     signalPower = sum(signal.^2)/(length(signal)*Zc);
     scaleFactor = sqrt(Pt/signalPower); % compare to wanted power
-    leveledSignal = signal*scaleFactor; % if (u^2/z)*4 = Pt then (u*sqrt(4))^2/z = Pt 
+    leveledSignal = signal*scaleFactor; % if u^2 / z *4 = Pt then (u*sqrt(4))^2 / z = Pt 
     signals(:,i) = leveledSignal;       % replace
 end
 

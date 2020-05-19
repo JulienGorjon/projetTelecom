@@ -39,6 +39,7 @@ Zc = 1;
  
 
 % Signal to noise ratio on receiver Eb/N0
+wantedEb_over_N0 = 2;   %[dB]
 
 % Analog filter parameters : nature, order, oscillation in bandwidth(ripple), attenuation outside the bandwidth 
 
