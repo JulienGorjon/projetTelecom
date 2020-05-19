@@ -103,23 +103,13 @@ end
 %endTime = max (symbols_time)
 function[values] = simplifiedReceptor(window, Tn, symbolsTime, scale, pilotSeq, Tanal) %version 1 : scale, sampling, sync, quantization, decision 
 figure
-sampleNumber = [1:1:length(window)]
-plot(sampleNumber, window)
-title('input receptor')
-xlabel('sample number')
-ylabel('Magnitude')
+plot(, wind
 %scaling signal, return to range [-1;1]
 window = window/scale;
 %3 level quantization
 partition = [-1, 1]; % if value < -1, qValue = 0, if -1 < value < 1, qValue = 1, if  value > 1, qValue = 2
 qValues = quantiz(window, partition); % = quantiz(sampled, partition);
 %symbol estimation
-figure
-sampleNumber = [1:1:length(qValues)]
-plot(sampleNumber, qValues)
-title('qValues')
-xlabel('sample number')
-ylabel('Magnitude')
 estimValues = ones([1, length(qValues)]).*(-1);
 for k = 1:length(qValues)
    if qValues(k) == 0
@@ -134,12 +124,7 @@ for k = 1:length(qValues)
        end
    end           
 end
-figure
-sampleNumber = [1:1:length(estimValues)]
-plot(sampleNumber, estimValues)
-title('estimate of values')
-xlabel('sample number')
-ylabel('Magnitude')
+
 %sync by finding time of maximum correlation between pilote sequence and
 %the signal
 pilotSeq = pilotSeq.';
@@ -154,7 +139,6 @@ startTime = indexMax * Tanal; %start sampling at the end of pilot sequence
 %tSamp = startTime:Tn:endTime;
 %values = interp1(symbolsTime, estimValues, tSamp, 'spline');
 indexMax = indexMax - (length(estimValues)-length(pilotSeq))
-%%%% DISPLAY %%%%
 stuff = zeros([1, indexMax]);
 stuff_after = zeros([1, (length(estimValues) - indexMax - length(pilotSeq))]);
 sizeStuff = size(stuff)
@@ -164,20 +148,11 @@ pilotSeqDraw = [pilotSeqDraw stuff_after];
 xAxis = [1:1:length(estimValues)]
 figure
 plot(xAxis,estimValues, xAxis, pilotSeqDraw)
-title('pilote sequence position')
 grid on
 hold on
 xlabel('Frequency (rad/s)')
 ylabel('Magnitude')
-%%%%%%%%%%%%%%%%%%%%%%%
 estimValuesCrop = estimValues(:, indexMax:end);
 values = downsample(estimValuesCrop, 10);
-%%% DISPLAY %%%
-figure
-sampleNumber = [1:1:length(values)]
-plot(sampleNumber, values)
-title('output of receptor')
-xlabel('sample number')
-ylabel('Magnitude')
-%%%%%%%%%%%%%%%
+
 end
