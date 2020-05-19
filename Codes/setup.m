@@ -4,9 +4,7 @@ Tn = Tb / Beta;
 % analog sample period
 Ta = Tn / Gamma;
 
-% frequencies vector 
+% Eb/N0 : dB to real value
+wantedEb_over_N0 = 10^wantedEb_over_N0;
 
-% central qrequencies fn
-
-% ... 
 
