@@ -11,7 +11,6 @@ figure
 plot(f,single_sided)
 title("Transformée de Fourrier sur r, le signal bruité")
 xlabel("[ Hz ]")
-% for loop to get all windows in array would be nice 
 window1 = analogFilter(r, 1/Tb, Fs); %1/Tb the cutoff frequency
 window2 = analogFilter(r, [2/Tb, 3/Tb], Fs);
 window3 = analogFilter(r, [4/Tb, 5/Tb], Fs);
@@ -50,15 +49,12 @@ xlabel("[ Hz ]")
 %compute values based on the windows
 WINDOW = signals(:,1); % declare a proper window to test the receptor
 scale = 1; %compute the right scale
-out_receiver = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal, Gamma, Beta, length(Md(:,1)))
+out_receiver = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal, Gamma, Beta, 10)
 %compute error rate
 original_msg = Md(:,1).'
 errors = xor(Md(:,1).', out_receiver);
 error_rate = nnz(errors)/length(out_receiver)
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%  FUNCTIONS DEFINITION  %%%%%%%%%%%%%%%%
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 function[r_n] = analogFilter(signal, frequency, Fs)
    w = [];
    ftype = 'bandpass'; 
