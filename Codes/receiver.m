@@ -48,11 +48,11 @@ xlabel("[ Hz ]")
 WINDOW = signals(:,1); % declare a proper window to test the receptor
 scale = 1; %compute the right scale
 Ms
-values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal, Gamma, Beta);
+values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal, Gamma, Beta)
 %compute error rate
 lengthValues = length(values)
-Md
-errors = xor(Md(:,1), values);
+Md(:,1)
+errors = xor(Md(:,1).', values);
 error_rate = nnz(errors)/length(values)
 
 function[r_n] = analogFilter(signal, frequency, Fs)
@@ -85,8 +85,8 @@ function[r_n] = analogFilter(signal, frequency, Fs)
    filter_transfer_freq = freqs(num, den, w);
   
    i_filter_transfer_freq = imag(filter_transfer_freq);
-   r_i_filter_transfer_freq = [filter_transfer_freq i_filter_transfer_freq] %concatenate both arrays
-   w2 = [w (w+w(end))]
+   r_i_filter_transfer_freq = [filter_transfer_freq i_filter_transfer_freq]; %concatenate both arrays
+   w2 = [w (w+w(end))];
    mag = abs(r_i_filter_transfer_freq);
    plot(w2,mag)
    grid on
@@ -103,7 +103,7 @@ end
 %endTime = max (symbols_time)
 function[values] = simplifiedReceptor(window, Tn, symbolsTime, scale, pilotSeq, Tanal, Gamma, Beta) %version 1 : scale, sampling, sync, quantization, decision 
 figure
-sampleNumber = [1:1:length(window)]
+sampleNumber = [1:1:length(window)];
 plot(sampleNumber, window)
 title('input receptor')
 xlabel('sample number')
@@ -115,7 +115,7 @@ partition = [-1, 1]; % if value < -1, qValue = 0, if -1 < value < 1, qValue = 1,
 qValues = quantiz(window, partition); % = quantiz(sampled, partition);
 %symbol estimation
 figure
-sampleNumber = [1:1:length(qValues)]
+sampleNumber = [1:1:length(qValues)];
 plot(sampleNumber, qValues)
 title('qValues')
 xlabel('sample number')
@@ -135,7 +135,7 @@ for k = 1:length(qValues)
    end           
 end
 figure
-sampleNumber = [1:1:length(estimValues)]
+sampleNumber = [1:1:length(estimValues)];
 plot(sampleNumber, estimValues)
 title('estimate of values')
 xlabel('sample number')
@@ -153,7 +153,7 @@ startTime = indexMax * Tanal; %start sampling at the end of pilot sequence
 %endTime = symbolsTime(end); %last value is the maximum value and the last sample time
 %tSamp = startTime:Tn:endTime;
 %values = interp1(symbolsTime, estimValues, tSamp, 'spline');
-indexMax = indexMax - (length(estimValues)-length(pilotSeq))
+indexMax = indexMax - (length(estimValues)-Gamma*Beta*(length(pilotSeq)+1))%-length(pilotSeq))
 %%%% DISPLAY %%%%
 stuff = zeros([1, indexMax]);
 stuff_after = zeros([1, (length(estimValues) - indexMax - length(pilotSeq))]);
@@ -161,7 +161,7 @@ sizeStuff = size(stuff)
 sizePilotSeq = size(pilotSeq)
 pilotSeqDraw = [stuff pilotSeq];
 pilotSeqDraw = [pilotSeqDraw stuff_after];
-xAxis = [1:1:length(estimValues)]
+xAxis = [1:1:length(estimValues)];
 figure
 plot(xAxis,estimValues, xAxis, pilotSeqDraw)
 title('pilote sequence position')
@@ -170,11 +170,11 @@ hold on
 xlabel('Frequency (rad/s)')
 ylabel('Magnitude')
 %%%%%%%%%%%%%%%%%%%%%%%
-estimValuesCrop = estimValues(:, indexMax:end);
+estimValuesCrop = estimValues(:, indexMax:(indexMax + 9*Beta*Gamma));
 values = downsample(estimValuesCrop, Gamma*Beta);
 %%% DISPLAY %%%
 figure
-sampleNumber = [1:1:length(values)]
+sampleNumber = [1:1:length(values)];
 plot(sampleNumber, values)
 title('output of receptor')
 xlabel('sample number')
