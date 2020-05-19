@@ -45,7 +45,7 @@ title("Filtrage, fenêtre 3")
 xlabel("[ Hz ]")
 
 %compute values based on the windows
-WINDOW = 1:1:length(symbols_time); % declare a proper window to test the receptor
+WINDOW = signals(:,1); % declare a proper window to test the receptor
 scale = 1; %compute the right scale
 Ms
 values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal);
@@ -91,12 +91,9 @@ function[r_n] = analogFilter(signal, frequency, Fs)
    xlabel('Frequency (rad/s)')
    ylabel('Magnitude')
 
-   subplot(2,1,2)
-   semilogx(w,phasedeg)
-   grid on
-   xlabel('Frequency (rad/s)')
-   ylabel('Phase (degrees)')
-   filter_transfer = ifft(filter_transfer_freq);
+   i_filter_transfer_freq = imag(filter_transfer_freq);
+   r_i_filter_transfer_freq = [filter_transfer_freq i_filter_transfer_freq] %concatenate both arrays
+   filter_transfer = ifft(i_filter_transfer_freq);
    r_n = conv(filter_transfer, signal); %convolution product
 end
 
@@ -127,14 +124,20 @@ end
 
 %sync by finding time of maximum correlation between pilote sequence and
 %the signal
+size(estimValues)
+size(pilotSeq)
 correl = xcorr(estimValues, pilotSeq);
 [maxVal, indexMax] = max(correl);
-startTime = indexMax * Tanal;
+size(correl)
+startTime = indexMax * Tanal; %start sampling at the end of pilot sequence
 %Sampling to original rate
-endTime = symbolsTime(end); %last value is the maximum value and the last sample time
-tSamp = startTime:Tn:endTime;
-estimValues
-values = interp1(symbolsTime, estimValues, tSamp, 'spline');
-
+%endTime = symbolsTime(end); %last value is the maximum value and the last sample time
+%tSamp = startTime:Tn:endTime;
+%values = interp1(symbolsTime, estimValues, tSamp, 'spline');
+indexMax
+maxVal
+size(estimValues)
+estimValuesCrop = estimValues(:, indexMax:end)
+values = downsample(estimValuesCrop, 10);
 
 end
