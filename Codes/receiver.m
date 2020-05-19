@@ -48,11 +48,11 @@ xlabel("[ Hz ]")
 WINDOW = signals(:,1); % declare a proper window to test the receptor
 scale = 1; %compute the right scale
 Ms
-values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal);
+values = simplifiedReceptor(WINDOW, Tn, symbols_time, scale, Ms, Tanal, Gamma, Beta);
 %compute error rate
 lengthValues = length(values)
 Md
-errors = xor(Md(1), values);
+errors = xor(Md(:,1), values);
 error_rate = nnz(errors)/length(values)
 
 function[r_n] = analogFilter(signal, frequency, Fs)
@@ -101,7 +101,7 @@ end
 %nb is the quantization step
 %1/Tn is the sampling rate
 %endTime = max (symbols_time)
-function[values] = simplifiedReceptor(window, Tn, symbolsTime, scale, pilotSeq, Tanal) %version 1 : scale, sampling, sync, quantization, decision 
+function[values] = simplifiedReceptor(window, Tn, symbolsTime, scale, pilotSeq, Tanal, Gamma, Beta) %version 1 : scale, sampling, sync, quantization, decision 
 figure
 sampleNumber = [1:1:length(window)]
 plot(sampleNumber, window)
@@ -171,7 +171,7 @@ xlabel('Frequency (rad/s)')
 ylabel('Magnitude')
 %%%%%%%%%%%%%%%%%%%%%%%
 estimValuesCrop = estimValues(:, indexMax:end);
-values = downsample(estimValuesCrop, 10);
+values = downsample(estimValuesCrop, Gamma*Beta);
 %%% DISPLAY %%%
 figure
 sampleNumber = [1:1:length(values)]
