@@ -12,7 +12,7 @@ plot(f,single_sided)
 title("Transformée de Fourrier sur r, le signal bruité")
 xlabel("[ Hz ]")
 % for loop to get all windows in array would be nice 
-Bp = 700;%1+alpha/(2*Tb)
+Bp = 800;%1+alpha/(2*Tb)
 window1 = analogFilter(r, Bp, Fs); %1/Tb the cutoff frequency
 window2 = analogFilter(r, [2000-Bp, 2000+Bp], Fs);
 window3 = analogFilter(r, [4000-Bp, 4000+Bp], Fs);
@@ -83,7 +83,7 @@ function[r_n] = analogFilter(signal, frequency, Fs)
    end
    %filter chebyshev of order 3, in order to have greater selectivity
    pulse = 2*pi*frequency % :-( for digital filters, wp is normalized with respect to the Nyquist rate (half the sample rate)
-   [zero, pole, gain] = cheby1(5, 0.5, pulse, ftype, 's')%butter(5, pulse, ftype, 's');  %lowpass filter if frequency is a scalar, bandpass filter if it is a 2 element vector
+   [zero, pole, gain] = butter(5, pulse, ftype, 's');  %lowpass filter if frequency is a scalar, bandpass filter if it is a 2 element vector
    %0.1 is Rp, which is ripple in passband (in dB)
    %TODO : check butter cheby2 ellip and besself filters. "Les familles de ?ltres analogiques physiquement r´ealisables 
    %les plus connues sont les ?ltres de Butterworth, Chebyshev, Bessel et les ?ltres elliptiques. L’ordre kn du ?ltre 
@@ -104,7 +104,7 @@ function[r_n] = analogFilter(signal, frequency, Fs)
    xlabel('Pulse (rad/s)')
    ylabel('Magnitude (dB)')
    %hold off
-   filter_transfer = ifft(filter_transfer_freq); %r_i_filter_transfer_freq
+   filter_transfer = ifft(r_i_filter_transfer_freq); %r_i_filter_transfer_freq
    r_n = conv(signal, r_i_filter_transfer_freq) ; %convolution product conv(signal, transfer)
 end
 
@@ -173,7 +173,7 @@ stem(lags, correl)
 %the payload => substract size of estimValues, than the size of the
 %sequence
 [maxVal, indexMax] = max(correl);
-startTime = indexMax - (length(estimValues)-Gamma*Beta*(length(pilotSeq)))%-length(pilotSeq))
+startTime = indexMax - (length(estimValues)-Gamma*Beta*(length(pilotSeq)));%-length(pilotSeq))
 
 %%%% DISPLAY %%%%
 stuff = zeros([1, startTime]);
