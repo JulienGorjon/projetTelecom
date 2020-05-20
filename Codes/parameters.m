@@ -3,7 +3,7 @@ M = 9;
 
 % Messages' nature (sequence imposee, sequence generee aleatoirement, ...) 
 Ms = transpose([1, 0, 1, 1, 0]);
-Md = transpose([[0,1,1,0,1,0,0,0,1,1]; [1,1,1,0,1,0,0,0,1,1]; [0,0,1,0,1,0,0,0,1,1]; [1,0,1,0,1,0,0,0,1,1]]);
+Md = transpose([[0,1,1,0,1,0,1,0,1,1]; [1,1,1,0,1,0,0,0,1,1]; [0,0,1,0,1,0,0,0,1,1]; [1,0,1,0,1,0,0,0,1,1]]);
 
 % Number of modules (K) 
 K = 3;
