@@ -81,16 +81,9 @@ function[r_n] = analogFilter(signal, frequency, Fs)
    else
        sprintf("Incorrect frequency format");
    end
-   %filter chebyshev of order 3, in order to have greater selectivity
    pulse = 2*pi*frequency % :-( for digital filters, wp is normalized with respect to the Nyquist rate (half the sample rate)
    [zero, pole, gain] = butter(5, pulse, ftype, 's');  %lowpass filter if frequency is a scalar, bandpass filter if it is a 2 element vector
-   %0.1 is Rp, which is ripple in passband (in dB)
-   %TODO : check butter cheby2 ellip and besself filters. "Les familles de ?ltres analogiques physiquement r´ealisables 
-   %les plus connues sont les ?ltres de Butterworth, Chebyshev, Bessel et les ?ltres elliptiques. L’ordre kn du ?ltre 
-   %(qui d´etermine le nombre de cellules ´el´ementaires `a mettre en cascade), les fr´equences de coupure `a 3 dB f? n
-   %et f+ n , le niveau d’oscillation dans la bande passante (’ripple’) et l’a?aiblissement hors-bande sont autant de 
-   %param`etres `a prendre ´eventuellement en compte lors du
-   %dimensionnement de ces ?ltres."
+
    [b, a] = zp2tf(zero, pole, gain);
    [filter_transfer_freq, wb] = freqs(b, a, 4096);
   
